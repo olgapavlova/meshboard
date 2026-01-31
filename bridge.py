@@ -28,6 +28,7 @@ print("Meshtastic interface ready")
 def on_receive(packet, interface):
     decoded = packet.get("decoded", {})
 
+    """
     if "position" in decoded:
         pos = decoded["position"]
         lat = pos.get("latitude")
@@ -40,6 +41,7 @@ def on_receive(packet, interface):
                 conn.sendall(line.encode())
             except BrokenPipeError:
                 print("Socket client disconnected")
+    """
 
     if "text" in decoded:
         text = decoded["text"]
