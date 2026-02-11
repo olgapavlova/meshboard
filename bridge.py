@@ -4,9 +4,10 @@ import time
 from meshtastic.serial_interface import SerialInterface
 from pubsub import pub
 
-SOCKET_PATH = "/tmp/meshtastic.sock"
+MSG_PATH = "/tmp/mesh-msg.sock"
+GEO_PATH = "/tmp/mesh-geo.sock"
 
-# удалить старый сокет, если остался
+# удалить старый сокет, если остались
 try:
     os.unlink(SOCKET_PATH)
 except FileNotFoundError:
@@ -28,7 +29,6 @@ print("Meshtastic interface ready")
 def on_receive(packet, interface):
     decoded = packet.get("decoded", {})
 
-    """
     if "position" in decoded:
         pos = decoded["position"]
         lat = pos.get("latitude")
@@ -36,12 +36,11 @@ def on_receive(packet, interface):
         ts  = pos.get("time", int(time.time()))
 
         if lat is not None and lon is not None:
-            line = f"POS {lat} {lon} {ts}\n"
+            line = f"GEO {lat} {lon} {ts}\n"
             try:
                 conn.sendall(line.encode())
             except BrokenPipeError:
                 print("Socket client disconnected")
-    """
 
     if "text" in decoded:
         text = decoded["text"]

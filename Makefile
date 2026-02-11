@@ -1,5 +1,14 @@
-bridge:
-	python3 bridge.py
+all: reader.run
+	@make server --no-print-directory
 
-socket:
-	socat - UNIX-CONNECT:/tmp/meshtastic.sock
+%.run: %.c
+	@gcc -o $@ $^
+
+server:
+	@python3 router
+
+msg:
+	./reader.run /tmp/mesh-msg.sock
+
+gps:
+	./reader.run /tmp/mesh-gps.sock
